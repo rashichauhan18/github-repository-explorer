@@ -38,4 +38,4 @@ A React-based web application that allows users to search, explore, and analyze 
 Clone the repository:
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/rashichauhan18/github-repository-explorer.git

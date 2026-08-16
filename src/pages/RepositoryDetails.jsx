@@ -111,8 +111,10 @@ function RepositoryDetails() {
     fetchLanguages();
   }, [owner, repoName]);
 
-  // Calculate language percentages
-
+  /*
+   * Convert GitHub's language byte counts
+   * into percentages.
+   */
   const languageEntries = Object.entries(languages);
 
   const totalLanguageBytes = languageEntries.reduce(
@@ -123,47 +125,36 @@ function RepositoryDetails() {
   const languagePercentages = languageEntries
     .map(([language, bytes]) => ({
       language,
-      percentage:
-        totalLanguageBytes > 0
-          ? (bytes / totalLanguageBytes) * 100
-          : 0,
+      percentage: (bytes / totalLanguageBytes) * 100,
     }))
     .sort((a, b) => b.percentage - a.percentage);
-
-  // Loading state
 
   if (loading) {
     return (
       <div className="details-page">
-        <p className="status">
-          Loading repository details...
-        </p>
+        <div className="loading-card">
+          <div className="loading-spinner"></div>
+          <p>Loading repository details...</p>
+        </div>
       </div>
     );
   }
 
-  // Error state
-
-  if (error) {
+  if (error || !repository) {
     return (
       <div className="details-page">
-        <div className="details-card">
+        <div className="error-card">
+          <div className="error-icon">!</div>
 
-          <h1>
-            Repository Not Found
-          </h1>
+          <h1>Repository Not Found</h1>
 
-          <p className="details-description">
+          <p>
             We couldn't find this GitHub repository.
           </p>
 
-          <a
-            href="/"
-            className="back-link"
-          >
+          <a href="/" className="back-button">
             ← Back to Search
           </a>
-
         </div>
       </div>
     );
@@ -172,18 +163,16 @@ function RepositoryDetails() {
   return (
     <div className="details-page">
 
-      {/* Back to Search */}
-
-      <a
-        href="/"
-        className="back-link"
-      >
+      {/* Back button */}
+      <a href="/" className="back-link">
         ← Back to Search
       </a>
 
       <div className="details-card">
 
-        {/* Repository Header */}
+        {/* =========================
+            HEADER
+        ========================== */}
 
         <div className="details-header">
 
@@ -193,7 +182,7 @@ function RepositoryDetails() {
             className="details-avatar"
           />
 
-          <div>
+          <div className="details-title">
 
             <p className="details-owner">
               {repository.owner.login}
@@ -205,6 +194,10 @@ function RepositoryDetails() {
 
           </div>
 
+          <span className="visibility-badge">
+            {repository.visibility}
+          </span>
+
         </div>
 
         {/* Description */}
@@ -214,141 +207,144 @@ function RepositoryDetails() {
             "No description available."}
         </p>
 
-        {/* Statistics */}
+        {/* =========================
+            STATISTICS
+        ========================== */}
 
         <div className="details-stats">
 
           <div className="stat">
-
-            <span>
-              ⭐
-            </span>
+            <span className="stat-icon">⭐</span>
 
             <strong>
-              {repository.stargazers_count}
+              {repository.stargazers_count.toLocaleString()}
             </strong>
 
             <small>
               Stars
             </small>
-
           </div>
 
           <div className="stat">
-
-            <span>
-              🍴
-            </span>
+            <span className="stat-icon">🍴</span>
 
             <strong>
-              {repository.forks_count}
+              {repository.forks_count.toLocaleString()}
             </strong>
 
             <small>
               Forks
             </small>
-
           </div>
 
           <div className="stat">
-
-            <span>
-              🐛
-            </span>
+            <span className="stat-icon">🐛</span>
 
             <strong>
-              {repository.open_issues_count}
+              {repository.open_issues_count.toLocaleString()}
             </strong>
 
             <small>
               Open Issues
             </small>
-
           </div>
 
           <div className="stat">
-
-            <span>
-              💻
-            </span>
+            <span className="stat-icon">💻</span>
 
             <strong>
               {repository.language || "Unknown"}
             </strong>
 
             <small>
-              Language
+              Main Language
             </small>
-
           </div>
 
         </div>
 
-        {/* Repository Information */}
+        {/* =========================
+            REPOSITORY INFORMATION
+        ========================== */}
 
-        <div className="details-info">
+        <section className="details-section">
 
-          <p>
-            <strong>
-              Visibility:
-            </strong>{" "}
-            {repository.visibility}
-          </p>
+          <div className="section-heading">
+            <span className="section-number">01</span>
 
-          <p>
-            <strong>
-              Default Branch:
-            </strong>{" "}
-            {repository.default_branch}
-          </p>
+            <div>
+              <h2>Repository Information</h2>
 
-          <p>
-            <strong>
-              Created:
-            </strong>{" "}
-            {new Date(
-              repository.created_at
-            ).toLocaleDateString()}
-          </p>
+              <p>
+                Important information about this repository.
+              </p>
+            </div>
+          </div>
 
-          <p>
-            <strong>
-              Last Updated:
-            </strong>{" "}
-            {new Date(
-              repository.updated_at
-            ).toLocaleDateString()}
-          </p>
+          <div className="info-grid">
 
-          {/* License */}
-
-          <p>
-            <strong>
-              License:
-            </strong>{" "}
-            {repository.license
-              ? repository.license.name
-              : "No license specified"}
-          </p>
-
-          {/* Homepage */}
-
-          {repository.homepage && (
-            <p>
+            <div className="info-item">
+              <span>Visibility</span>
               <strong>
-                Homepage:
-              </strong>{" "}
+                {repository.visibility}
+              </strong>
+            </div>
 
-              <a
-                href={repository.homepage}
-                target="_blank"
-                rel="noreferrer"
-                className="github-link"
-              >
-                Visit Website →
-              </a>
-            </p>
-          )}
+            <div className="info-item">
+              <span>Default Branch</span>
+              <strong>
+                {repository.default_branch}
+              </strong>
+            </div>
+
+            <div className="info-item">
+              <span>Created</span>
+              <strong>
+                {new Date(
+                  repository.created_at
+                ).toLocaleDateString()}
+              </strong>
+            </div>
+
+            <div className="info-item">
+              <span>Last Updated</span>
+              <strong>
+                {new Date(
+                  repository.updated_at
+                ).toLocaleDateString()}
+              </strong>
+            </div>
+
+            <div className="info-item">
+              <span>License</span>
+
+              <strong>
+                {repository.license
+                  ? repository.license.name
+                  : "No license"}
+              </strong>
+            </div>
+
+            <div className="info-item">
+              <span>Homepage</span>
+
+              {repository.homepage ? (
+                <a
+                  href={repository.homepage}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="homepage-link"
+                >
+                  {repository.homepage}
+                </a>
+              ) : (
+                <strong>
+                  No homepage
+                </strong>
+              )}
+            </div>
+
+          </div>
 
           {/* Topics */}
 
@@ -363,26 +359,21 @@ function RepositoryDetails() {
 
                 <div className="topics">
 
-                  {repository.topics.map(
-                    (topic) => (
-
-                      <span
-                        className="topic"
-                        key={topic}
-                      >
-                        {topic}
-                      </span>
-
-                    )
-                  )}
+                  {repository.topics.map((topic) => (
+                    <span
+                      className="topic"
+                      key={topic}
+                    >
+                      #{topic}
+                    </span>
+                  ))}
 
                 </div>
 
               </div>
-
             )}
 
-          {/* GitHub Button */}
+          {/* GitHub button */}
 
           <a
             href={repository.html_url}
@@ -390,106 +381,142 @@ function RepositoryDetails() {
             rel="noreferrer"
             className="github-button"
           >
-            View Repository on GitHub →
+            View Repository on GitHub
+            <span>↗</span>
           </a>
 
-        </div>
+        </section>
 
-        {/* Language Usage */}
+        {/* =========================
+            LANGUAGE USAGE
+        ========================== */}
 
-        <div className="languages-section">
+        <section className="details-section">
 
-          <h2>
-            Language Usage
-          </h2>
+          <div className="section-heading">
+            <span className="section-number">02</span>
+
+            <div>
+              <h2>Language Usage</h2>
+
+              <p>
+                Programming languages used in this repository.
+              </p>
+            </div>
+          </div>
 
           {languagesLoading && (
-            <p className="status">
-              Loading language information...
-            </p>
+            <div className="section-loading">
+              <div className="small-spinner"></div>
+              <span>Analyzing languages...</span>
+            </div>
           )}
 
           {!languagesLoading &&
             languagePercentages.length === 0 && (
-
-              <p className="status">
-                No language information available.
+              <p className="empty-message">
+                Language information is not available.
               </p>
-
             )}
 
           {!languagesLoading &&
             languagePercentages.length > 0 && (
 
-              <div className="language-list">
+              <div className="language-chart">
 
-                {languagePercentages.map(
-                  ({
-                    language,
-                    percentage,
-                  }) => (
+                {/* Percentage bar */}
 
-                    <div
-                      className="language-item"
-                      key={language}
-                    >
+                <div className="language-bar">
 
-                      <div className="language-header">
+                  {languagePercentages.map(
+                    ({ language, percentage }) => (
+                      <div
+                        key={language}
+                        className={`language-segment language-${language
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]/g, "")}`}
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                        title={`${language}: ${percentage.toFixed(
+                          1
+                        )}%`}
+                      ></div>
+                    )
+                  )}
+
+                </div>
+
+                {/* Legend */}
+
+                <div className="language-list">
+
+                  {languagePercentages.map(
+                    ({ language, percentage }, index) => (
+
+                      <div
+                        className="language-row"
+                        key={language}
+                      >
+
+                        <div className="language-name">
+
+                          <span
+                            className={`language-dot language-dot-${index}`}
+                          ></span>
+
+                          <span>
+                            {language}
+                          </span>
+
+                        </div>
 
                         <strong>
-                          {language}
+                          {percentage.toFixed(1)}%
                         </strong>
 
-                        <span>
-                          {percentage.toFixed(1)}%
-                        </span>
-
                       </div>
 
-                      <div className="language-bar">
+                    )
+                  )}
 
-                        <div
-                          className="language-progress"
-                          style={{
-                            width:
-                              `${percentage}%`,
-                          }}
-                        ></div>
-
-                      </div>
-
-                    </div>
-
-                  )
-                )}
+                </div>
 
               </div>
-
             )}
 
-        </div>
+        </section>
 
-        {/* Top Contributors */}
+        {/* =========================
+            CONTRIBUTORS
+        ========================== */}
 
-        <div className="contributors-section">
+        <section className="details-section">
 
-          <h2>
-            Top Contributors
-          </h2>
+          <div className="section-heading">
+            <span className="section-number">03</span>
+
+            <div>
+              <h2>Top Contributors</h2>
+
+              <p>
+                Developers who contributed to this repository.
+              </p>
+            </div>
+          </div>
 
           {contributorsLoading && (
-            <p className="status">
-              Loading contributors...
-            </p>
+            <div className="section-loading">
+              <div className="small-spinner"></div>
+              <span>Loading contributors...</span>
+            </div>
           )}
 
           {!contributorsLoading &&
             contributors.length === 0 && (
-
-              <p className="status">
+              <p className="empty-message">
                 No contributors found.
               </p>
-
             )}
 
           {!contributorsLoading &&
@@ -497,78 +524,104 @@ function RepositoryDetails() {
 
               <div className="contributors">
 
-                {contributors.map(
-                  (contributor) => (
+                {contributors.map((contributor, index) => (
 
-                    <div
-                      className="contributor"
-                      key={contributor.id}
-                    >
+                  <div
+                    className="contributor"
+                    key={contributor.id}
+                  >
 
-                      <img
-                        src={contributor.avatar_url}
-                        alt={`${contributor.login} avatar`}
-                        className="contributor-avatar"
-                      />
+                    <span className="contributor-rank">
+                      #{index + 1}
+                    </span>
 
-                      <div>
+                    <img
+                      src={contributor.avatar_url}
+                      alt={`${contributor.login} avatar`}
+                      className="contributor-avatar"
+                    />
 
-                        <strong>
-                          {contributor.login}
-                        </strong>
+                    <div className="contributor-info">
 
-                        <p>
-                          {contributor.contributions} contributions
-                        </p>
+                      <strong>
+                        {contributor.login}
+                      </strong>
 
-                      </div>
+                      <p>
+                        {contributor.contributions.toLocaleString()}{" "}
+                        contributions
+                      </p>
 
                     </div>
 
-                  )
-                )}
+                    <a
+                      href={contributor.html_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="contributor-link"
+                    >
+                      ↗
+                    </a>
+
+                  </div>
+
+                ))}
 
               </div>
-
             )}
 
-        </div>
+        </section>
 
-        {/* README */}
-
-        <div className="readme-section">
-
-          <h2>
+        {/* =========================
             README
-          </h2>
+        ========================== */}
+
+        <section className="details-section">
+
+          <div className="section-heading">
+            <span className="section-number">04</span>
+
+            <div>
+              <h2>README</h2>
+
+              <p>
+                Documentation provided by the repository.
+              </p>
+            </div>
+          </div>
 
           {readmeLoading && (
-            <p className="status">
-              Loading README...
-            </p>
+            <div className="section-loading">
+              <div className="small-spinner"></div>
+              <span>Loading README...</span>
+            </div>
           )}
 
-          {!readmeLoading &&
-            readme && (
+          {!readmeLoading && readme && (
+            <div className="readme-container">
 
               <pre className="readme-content">
                 {readme}
               </pre>
 
-            )}
+            </div>
+          )}
 
-          {!readmeLoading &&
-            !readme && (
+          {!readmeLoading && !readme && (
+            <p className="empty-message">
+              This repository does not have a README.
+            </p>
+          )}
 
-              <p className="status">
-                This repository does not have a README.
-              </p>
-
-            )}
-
-        </div>
+        </section>
 
       </div>
+
+      {/* Footer */}
+
+      <footer className="details-footer">
+        Powered by GitHub REST API
+      </footer>
 
     </div>
   );

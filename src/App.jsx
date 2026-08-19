@@ -93,14 +93,8 @@ function App() {
       {/* Background decoration */}
       <div className="background-glow glow-one"></div>
       <div className="background-glow glow-two"></div>
-
       {/* HERO SECTION */}
       <header className="hero">
-        <div className="hero-badge">
-          <span className="badge-dot"></span>
-          Powered by GitHub REST API
-        </div>
-
         <h1>
           Explore the
           <span> GitHub Universe</span>

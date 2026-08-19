@@ -1,17 +1,12 @@
-/* =========================================================
-   GLOBAL
-========================================================= */
-
+/*GLOBAL */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 html {
   scroll-behavior: smooth;
 }
-
 body {
   font-family:
     Inter,
@@ -58,10 +53,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-/* =========================================================
-   APP
-========================================================= */
+/*APP*/
 
 .app {
   position: relative;
@@ -106,33 +98,6 @@ a {
   padding-bottom: 35px;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-
-  margin-bottom: 22px;
-
-  color: #60a5fa;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-.badge-dot {
-  width: 9px;
-  height: 9px;
-
-  border-radius: 50%;
-
-  background: #22c55e;
-
-  box-shadow:
-    0 0 0 5px rgba(34, 197, 94, 0.12),
-    0 0 15px rgba(34, 197, 94, 0.7);
-}
-
 .hero h1 {
   font-size: clamp(3rem, 6vw, 5.2rem);
   line-height: 1.02;
@@ -140,7 +105,6 @@ a {
   letter-spacing: -2.5px;
 
   margin-bottom: 22px;
-
   color: #f8fafc;
 }
 
@@ -328,20 +292,15 @@ a {
 
   background: #1e293b;
   color: #cbd5e1;
-
   font-size: 1.3rem;
-
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
 }
-
 .clear-button:hover {
   background: #334155;
   border-color: #64748b;
 }
-
-/* Search button */
 
 .search-button {
   min-width: 175px;
@@ -401,7 +360,6 @@ a {
 
   font-size: 0.85rem;
 }
-
 .search-hint kbd {
   padding: 3px 7px;
 
@@ -912,11 +870,9 @@ a {
 .github-link:hover {
   color: #93c5fd;
 }
-
 /* =========================================================
    PAGINATION
 ========================================================= */
-
 .pagination {
   display: flex;
   align-items: center;
@@ -1182,11 +1138,7 @@ a {
 .stat small {
   color: #64748b;
 }
-
-/* =========================================================
-   DETAILS SECTIONS
-========================================================= */
-
+/*DETAILS SECTIONS*/
 .details-section {
   margin-top: 55px;
 
@@ -1267,15 +1219,10 @@ a {
 .homepage-link:hover {
   text-decoration: underline;
 }
-
-/* =========================================================
-   TOPICS
-========================================================= */
-
+/* TOPICS*/
 .topics-section {
   margin-top: 25px;
 }
-
 .topics-section h3 {
   margin-bottom: 12px;
 }
@@ -1434,11 +1381,8 @@ a {
 .language-dot {
   width: 10px;
   height: 10px;
-
   flex-shrink: 0;
-
   border-radius: 50%;
-
   background: #60a5fa;
 }
 
@@ -1469,11 +1413,7 @@ a {
 .language-dot-6 {
   background: #89e051;
 }
-
-/* =========================================================
-   CONTRIBUTORS
-========================================================= */
-
+/* CONTRIBUTORS*/
 .contributors {
   display: grid;
 
@@ -1653,105 +1593,77 @@ a {
   color: white;
 }
 
-/* =========================================================
-   DETAILS FOOTER
-========================================================= */
+/*DETAILS FOOTER*/
 
 .details-footer {
   max-width: 1050px;
-
   margin: 40px auto 0;
-
   color: #64748b;
-
   text-align: center;
-
   font-size: 0.85rem;
 }
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .app {
     padding: 0 5%;
   }
-
   .results {
     grid-template-columns: 1fr;
   }
-
   .details-stats {
     grid-template-columns:
       repeat(2, 1fr);
   }
-
   .contributors {
     grid-template-columns: 1fr;
   }
 }
-
 @media (max-width: 700px) {
   .hero {
     padding-top: 35px;
   }
-
   .hero h1 {
     font-size: 2.8rem;
     letter-spacing: -1.5px;
   }
-
   .hero-subtitle {
     font-size: 1rem;
   }
-
   .hero-features {
     gap: 7px;
   }
-
   .hero-features span {
     font-size: 0.8rem;
   }
-
   .search-container {
     flex-direction: column;
     align-items: stretch;
   }
-
   .search-button {
     width: 100%;
   }
-
   .results-toolbar {
     align-items: flex-start;
     flex-direction: column;
   }
-
   .sort-container {
     width: 100%;
   }
-
   .sort-container select {
     flex: 1;
   }
-
   .info-grid {
     grid-template-columns: 1fr;
   }
-
   .language-list {
     grid-template-columns: 1fr;
   }
-
   .details-page {
     padding: 30px 5% 60px;
   }
-
   .details-card {
     padding: 25px;
   }
-
   .details-header {
     align-items: flex-start;
   }
@@ -1785,38 +1697,30 @@ a {
   .repository-stats {
     gap: 10px;
   }
-
   .card-footer {
     align-items: flex-start;
     flex-direction: column;
   }
-
   .details-stats {
     grid-template-columns: 1fr;
   }
-
   .details-header {
     flex-wrap: wrap;
   }
-
   .visibility-badge {
     margin-left: 0;
   }
-
   .details-avatar {
     width: 65px;
     height: 65px;
   }
-
   .details-card {
     padding: 20px;
   }
-
   .details-section {
     margin-top: 40px;
     padding-top: 28px;
   }
-
   .section-heading h2 {
     font-size: 1.5rem;
   }
